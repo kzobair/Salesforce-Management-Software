@@ -87,6 +87,7 @@ const KPIAssignments = () => {
       kam_user_id: assignment.kam_user_id,
       revenue_target: assignment.revenue_target,
       capacity_target: assignment.capacity_target,
+      kpi_score_target: assignment.kpi_score_target || 0,
       notes: assignment.notes || ''
     });
     setShowForm(true);
@@ -98,6 +99,7 @@ const KPIAssignments = () => {
       kam_user_id: '',
       revenue_target: 0,
       capacity_target: 0,
+      kpi_score_target: 0,
       notes: ''
     });
     setEditingAssignment(null);
