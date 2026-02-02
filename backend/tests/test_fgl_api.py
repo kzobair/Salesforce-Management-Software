@@ -336,7 +336,7 @@ class TestDelivered:
     
     def test_delivered_from_pipeline(self):
         """Test getting delivered records from pipelines marked as 'Yes'"""
-        response = requests.get(f"{BASE_URL}/api/delivered/from-pipeline", headers=self.headers)
+        response = requests.get(f"{BASE_URL}/api/pipelines/delivered-pipelines", headers=self.headers)
         assert response.status_code == 200, f"Delivered from pipeline failed: {response.text}"
         
         data = response.json()
