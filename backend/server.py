@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 
 # Import route modules
-from routes import auth, users, meetings, pipelines, delivered, kpi_assignments, kam_management
+from routes import auth, users, meetings, pipelines, delivered, kpi_assignments, kam_management, dashboard
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -44,6 +44,7 @@ api_router.include_router(pipelines.router)
 api_router.include_router(delivered.router)
 api_router.include_router(kpi_assignments.router)
 api_router.include_router(kam_management.router)
+api_router.include_router(dashboard.router)
 
 # Include the router in the main app
 app.include_router(api_router)
