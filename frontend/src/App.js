@@ -13,6 +13,8 @@ import Pipelines from "@/pages/Pipelines";
 import Delivered from "@/pages/Delivered";
 import UserManagement from "@/pages/UserManagement";
 import KPIAssignments from "@/pages/KPIAssignments";
+import KAMRankings from "@/pages/KAMRankings";
+import KAMProfile from "@/pages/KAMProfile";
 
 function App() {
   return (
@@ -70,6 +72,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <UserManagement />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/kam-rankings"
+              element={
+                <ProtectedRoute>
+                  <KAMRankings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/kam-profile/:kamUserId"
+              element={
+                <ProtectedRoute>
+                  <KAMProfile />
                 </ProtectedRoute>
               }
             />
