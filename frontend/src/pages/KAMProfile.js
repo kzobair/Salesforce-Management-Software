@@ -6,7 +6,7 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
-function PersonalInfoCard({ profile }) {
+function PersonalInfoCard({ kamInfo }) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
@@ -16,51 +16,69 @@ function PersonalInfoCard({ profile }) {
         <div>
           <label className="text-sm text-gray-500">Name</label>
           <p className="text-gray-900 font-medium" data-testid="kam-name">
-            {profile.name}
+            {kamInfo.name}
           </p>
         </div>
         <div>
           <label className="text-sm text-gray-500">Email</label>
-          <p className="text-gray-900" data-testid="kam-email">{profile.email}</p>
+          <p className="text-gray-900" data-testid="kam-email">{kamInfo.email}</p>
         </div>
         <div>
           <label className="text-sm text-gray-500">Mobile</label>
           <p className="text-gray-900" data-testid="kam-mobile">
-            {profile.mobile || "N/A"}
+            {kamInfo.mobile || "N/A"}
           </p>
         </div>
         <div>
           <label className="text-sm text-gray-500">Role</label>
-          <p className="text-gray-900">{profile.role}</p>
+          <p className="text-gray-900">{kamInfo.role}</p>
         </div>
       </div>
     </div>
   );
 }
 
-function KPIPerformanceCard({ profile }) {
+function StatisticsCard({ statistics }) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
-        KPI Performance
+        Performance Statistics
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-blue-50 rounded-lg p-4 text-center">
           <p className="text-sm text-blue-600 font-medium">Total KPI Score</p>
-          <p className="text-3xl font-bold text-blue-800" data-testid="total-kpi-score">
-            {profile.total_kpi_score || 0}
+          <p className="text-2xl font-bold text-blue-800" data-testid="total-kpi-score">
+            {statistics.total_kpi_score || 0}
           </p>
         </div>
         <div className="bg-green-50 rounded-lg p-4 text-center">
           <p className="text-sm text-green-600 font-medium">Meetings</p>
-          <p className="text-3xl font-bold text-green-800" data-testid="meetings-count">
-            {profile.meetings_count || 0}
+          <p className="text-2xl font-bold text-green-800" data-testid="meetings-count">
+            {statistics.total_meetings || 0}
           </p>
         </div>
         <div className="bg-purple-50 rounded-lg p-4 text-center">
-          <p className="text-sm text-purple-600 font-medium">Delivered</p>
-          <p className="text-3xl font-bold text-purple-800" data-testid="delivered-count">
-            {profile.delivered_count || 0}
+          <p className="text-sm text-purple-600 font-medium">Pipelines</p>
+          <p className="text-2xl font-bold text-purple-800">
+            {statistics.total_pipelines || 0}
+          </p>
+        </div>
+        <div className="bg-orange-50 rounded-lg p-4 text-center">
+          <p className="text-sm text-orange-600 font-medium">Delivered</p>
+          <p className="text-2xl font-bold text-orange-800" data-testid="delivered-count">
+            {statistics.total_delivered || 0}
+          </p>
+        </div>
+        <div className="bg-indigo-50 rounded-lg p-4 text-center">
+          <p className="text-sm text-indigo-600 font-medium">Total Revenue</p>
+          <p className="text-xl font-bold text-indigo-800">
+            ৳{(statistics.total_revenue || 0).toLocaleString()}
+          </p>
+        </div>
+        <div className="bg-teal-50 rounded-lg p-4 text-center">
+          <p className="text-sm text-teal-600 font-medium">Total Capacity</p>
+          <p className="text-xl font-bold text-teal-800">
+            {statistics.total_capacity || 0}
           </p>
         </div>
       </div>
@@ -71,24 +89,31 @@ function KPIPerformanceCard({ profile }) {
 function KPIHistoryRow({ kpi }) {
   return (
     <tr>
-      <td className="px-4 py-2 text-sm text-gray-900">{kpi.month}</td>
+      <td className="px-4 py-2 text-sm text-gray-900 font-medium">{kpi.month}</td>
       <td className="px-4 py-2 text-sm text-gray-900">{kpi.kpi_score_target || 0}</td>
-      <td className="px-4 py-2 text-sm text-gray-900">{kpi.meetings_target || 0}</td>
-      <td className="px-4 py-2 text-sm text-gray-900">{kpi.pipeline_target || 0}</td>
-      <td className="px-4 py-2 text-sm text-gray-900">{kpi.delivered_target || 0}</td>
+      <td className="px-4 py-2 text-sm text-gray-900">৳{(kpi.revenue_target || 0).toLocaleString()}</td>
+      <td className="px-4 py-2 text-sm text-gray-900">{kpi.capacity_target || 0}</td>
+      <td className="px-4 py-2 text-sm text-gray-500">{kpi.notes || '-'}</td>
     </tr>
   );
 }
 
-function KPIHistoryTable({ kpiHistory }) {
-  if (!kpiHistory || kpiHistory.length === 0) {
-    return null;
+function KPIHistoryTable({ kpiAssignments }) {
+  if (!kpiAssignments || kpiAssignments.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+          KPI Assignment History
+        </h2>
+        <p className="text-gray-500 text-center py-4">No KPI assignments found for this KAM.</p>
+      </div>
+    );
   }
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
-        KPI History
+        KPI Assignment History
       </h2>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
@@ -98,21 +123,21 @@ function KPIHistoryTable({ kpiHistory }) {
                 Month
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                Score Target
+                KPI Score Target
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                Meetings Target
+                Revenue Target
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                Pipeline Target
+                Capacity Target
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                Delivered Target
+                Notes
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {kpiHistory.map((kpi, idx) => (
+            {kpiAssignments.map((kpi, idx) => (
               <KPIHistoryRow key={idx} kpi={kpi} />
             ))}
           </tbody>
@@ -125,7 +150,7 @@ function KPIHistoryTable({ kpiHistory }) {
 export default function KAMProfile() {
   const { kamUserId } = useParams();
   const { user } = useAuth();
-  const [profile, setProfile] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -137,7 +162,7 @@ export default function KAMProfile() {
         const response = await axios.get(`${API_URL}/api/kam/profile/${kamUserId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setProfile(response.data);
+        setProfileData(response.data);
         setError(null);
       } catch (err) {
         setError("Failed to fetch KAM profile");
@@ -152,7 +177,7 @@ export default function KAMProfile() {
     }
   }, [kamUserId]);
 
-  if (user?.role !== "Super User") {
+  if (user?.role !== "SuperUser") {
     return (
       <Layout>
         <div className="p-6" data-testid="kam-profile-page">
@@ -188,11 +213,11 @@ export default function KAMProfile() {
           </div>
         )}
 
-        {!loading && !error && profile && (
+        {!loading && !error && profileData && (
           <div className="space-y-6">
-            <PersonalInfoCard profile={profile} />
-            <KPIPerformanceCard profile={profile} />
-            <KPIHistoryTable kpiHistory={profile.kpi_history} />
+            <PersonalInfoCard kamInfo={profileData.kam_info} />
+            <StatisticsCard statistics={profileData.statistics} />
+            <KPIHistoryTable kpiAssignments={profileData.kpi_assignments} />
           </div>
         )}
       </div>
