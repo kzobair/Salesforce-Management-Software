@@ -23,6 +23,7 @@ const KPIAssignments = () => {
     kam_user_id: '',
     revenue_target: 0,
     capacity_target: 0,
+    kpi_score_target: 0,
     notes: ''
   });
 
