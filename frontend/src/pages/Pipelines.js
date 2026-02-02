@@ -416,6 +416,7 @@ const Pipelines = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">MRC</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivered</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conf. Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -423,7 +424,7 @@ const Pipelines = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredPipelines.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan="9" className="px-6 py-8 text-center text-gray-500">
                       No confirmed pipelines found. Click "Add Pipeline" to create your first pipeline record.
                     </td>
                   </tr>
@@ -433,11 +434,26 @@ const Pipelines = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{pipeline.serial_number}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pipeline.client_name}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pipeline.contact_name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pipeline.capacity_req}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">৳{pipeline.capacity_mrc.toLocaleString()}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pipeline.capacity_req} {pipeline.capacity_unit || 'Mbps'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {pipeline.capacity_mrc_currency === 'USD' ? '$' : '৳'}{pipeline.capacity_mrc.toLocaleString()}
+                        {pipeline.capacity_otc > 0 && (
+                          <span className="text-xs text-gray-400 ml-1">+{pipeline.capacity_otc_currency === 'USD' ? '$' : '৳'}{pipeline.capacity_otc} OTC</span>
+                        )}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs font-semibold rounded-full ${pipeline.confirmation_status === 'Confirmed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                           {pipeline.confirmation_status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                          pipeline.delivered_status === 'Yes' ? 'bg-blue-100 text-blue-800' :
+                          pipeline.delivered_status === 'In Process' ? 'bg-purple-100 text-purple-800' :
+                          pipeline.delivered_status === 'No' ? 'bg-red-100 text-red-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {pipeline.delivered_status || 'Pending'}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
