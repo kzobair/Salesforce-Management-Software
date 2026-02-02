@@ -25,9 +25,17 @@ const Meetings = () => {
     contact_name: '',
     contact_number: '',
     capacity_req: 0,
+    capacity_unit: 'Mbps',
     capacity_mrc: 0,
+    capacity_mrc_currency: 'BDT',
+    capacity_otc: 0,
+    capacity_otc_currency: 'BDT',
     other_cap_req: 0,
+    other_cap_unit: 'Mbps',
     other_cap_mrc: 0,
+    other_cap_mrc_currency: 'BDT',
+    other_cap_otc: 0,
+    other_cap_otc_currency: 'BDT',
     kam_user_id: user?.user_id || '',
     meeting_minutes: ''
   });
