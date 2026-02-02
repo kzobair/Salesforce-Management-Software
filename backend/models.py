@@ -252,7 +252,7 @@ class DeliveredBase(BaseModel):
     other_cap_otc_currency: Literal["BDT", "USD"] = Field(default="BDT")
     kam_user_id: str
     pipeline_id: Optional[str] = None  # Link to pipeline record
-    kpi_score: float = Field(..., ge=0)  # From KPI assignment
+    kpi_score: float = Field(default=0, ge=0)  # From KPI assignment (optional with default 0)
     delivered_date: datetime
     delivered_status: Optional[Literal["Delivered", "Partial", "Cancelled"]] = Field(default="Delivered")
 
