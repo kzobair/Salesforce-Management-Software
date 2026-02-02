@@ -126,6 +126,9 @@ class TestMeetings:
     
     def test_create_meeting_with_otc_currency_unit(self):
         """Test creating meeting with OTC, currency, and unit fields"""
+        if not self.kam_user_id:
+            pytest.skip("No KAM users available for testing")
+        
         meeting_data = {
             "client_name": f"TEST_Client_{uuid.uuid4().hex[:8]}",
             "client_address": "Test Address 123",
@@ -143,7 +146,7 @@ class TestMeetings:
             "other_cap_mrc_currency": "USD",
             "other_cap_otc": 5000,
             "other_cap_otc_currency": "USD",
-            "kam_user_id": self.user_id,
+            "kam_user_id": self.kam_user_id,
             "meeting_minutes": "Test meeting notes"
         }
         
