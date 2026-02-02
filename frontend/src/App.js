@@ -9,6 +9,9 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
 import Meetings from "@/pages/Meetings";
+import Pipelines from "@/pages/Pipelines";
+import Delivered from "@/pages/Delivered";
+import UserManagement from "@/pages/UserManagement";
 
 function App() {
   return (
@@ -34,6 +37,30 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Meetings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pipelines"
+              element={
+                <ProtectedRoute>
+                  <Pipelines />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/delivered"
+              element={
+                <ProtectedRoute>
+                  <Delivered />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <UserManagement />
                 </ProtectedRoute>
               }
             />
