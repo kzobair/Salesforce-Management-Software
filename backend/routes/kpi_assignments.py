@@ -227,6 +227,7 @@ async def update_kpi_assignment(
     update_dict = {
         "revenue_target": assignment_data.revenue_target,
         "capacity_target": assignment_data.capacity_target,
+        "kpi_score_target": assignment_data.kpi_score_target,
         "notes": assignment_data.notes,
         "updated_at": datetime.utcnow().isoformat(),
         "updated_by": current_user.user_id
