@@ -26,13 +26,22 @@ const Pipelines = () => {
     contact_name: '',
     contact_number: '',
     capacity_req: 0,
+    capacity_unit: 'Mbps',
     capacity_mrc: 0,
+    capacity_mrc_currency: 'BDT',
+    capacity_otc: 0,
+    capacity_otc_currency: 'BDT',
     other_cap_req: 0,
+    other_cap_unit: 'Mbps',
     other_cap_mrc: 0,
+    other_cap_mrc_currency: 'BDT',
+    other_cap_otc: 0,
+    other_cap_otc_currency: 'BDT',
     kam_user_id: user?.user_id || '',
     confirmation_status: 'Pending',
     confirmation_date: '',
-    confirmation_notes: ''
+    confirmation_notes: '',
+    delivered_status: 'Pending'
   });
 
   useEffect(() => {
@@ -118,13 +127,22 @@ const Pipelines = () => {
       contact_name: pipeline.contact_name,
       contact_number: pipeline.contact_number,
       capacity_req: pipeline.capacity_req,
+      capacity_unit: pipeline.capacity_unit || 'Mbps',
       capacity_mrc: pipeline.capacity_mrc,
+      capacity_mrc_currency: pipeline.capacity_mrc_currency || 'BDT',
+      capacity_otc: pipeline.capacity_otc || 0,
+      capacity_otc_currency: pipeline.capacity_otc_currency || 'BDT',
       other_cap_req: pipeline.other_cap_req || 0,
+      other_cap_unit: pipeline.other_cap_unit || 'Mbps',
       other_cap_mrc: pipeline.other_cap_mrc || 0,
+      other_cap_mrc_currency: pipeline.other_cap_mrc_currency || 'BDT',
+      other_cap_otc: pipeline.other_cap_otc || 0,
+      other_cap_otc_currency: pipeline.other_cap_otc_currency || 'BDT',
       kam_user_id: pipeline.kam_user_id,
       confirmation_status: pipeline.confirmation_status,
       confirmation_date: pipeline.confirmation_date ? new Date(pipeline.confirmation_date).toISOString().split('T')[0] : '',
-      confirmation_notes: pipeline.confirmation_notes || ''
+      confirmation_notes: pipeline.confirmation_notes || '',
+      delivered_status: pipeline.delivered_status || 'Pending'
     });
     setShowForm(true);
   };
@@ -136,13 +154,22 @@ const Pipelines = () => {
       contact_name: '',
       contact_number: '',
       capacity_req: 0,
+      capacity_unit: 'Mbps',
       capacity_mrc: 0,
+      capacity_mrc_currency: 'BDT',
+      capacity_otc: 0,
+      capacity_otc_currency: 'BDT',
       other_cap_req: 0,
+      other_cap_unit: 'Mbps',
       other_cap_mrc: 0,
+      other_cap_mrc_currency: 'BDT',
+      other_cap_otc: 0,
+      other_cap_otc_currency: 'BDT',
       kam_user_id: user?.user_id || '',
       confirmation_status: 'Pending',
       confirmation_date: '',
-      confirmation_notes: ''
+      confirmation_notes: '',
+      delivered_status: 'Pending'
     });
     setEditingPipeline(null);
     setShowForm(false);
