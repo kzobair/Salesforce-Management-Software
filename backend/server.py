@@ -43,6 +43,7 @@ api_router.include_router(meetings.router)
 api_router.include_router(pipelines.router)
 api_router.include_router(delivered.router)
 api_router.include_router(kpi_assignments.router)
+api_router.include_router(kam_management.router)
 
 # Include the router in the main app
 app.include_router(api_router)
