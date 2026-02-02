@@ -39,6 +39,10 @@ async def root():
 # Include route modules
 api_router.include_router(auth.router)
 api_router.include_router(users.router)
+api_router.include_router(meetings.router)
+api_router.include_router(pipelines.router)
+api_router.include_router(delivered.router)
+api_router.include_router(kpi_assignments.router)
 
 # Include the router in the main app
 app.include_router(api_router)
