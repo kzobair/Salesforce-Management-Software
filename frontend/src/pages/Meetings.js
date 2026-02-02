@@ -2,9 +2,9 @@
  * Meetings Page - List and manage client meetings
  */
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import axios from 'axios';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
