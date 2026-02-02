@@ -272,6 +272,7 @@ const KPIAssignments = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">KAM</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenue Target</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Capacity Target</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">KPI Score Target</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Notes</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
