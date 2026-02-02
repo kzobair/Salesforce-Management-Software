@@ -33,7 +33,7 @@ export default function KAMRankings() {
     }
   };
 
-  if (user?.role !== "Super User") {
+  if (user?.role !== "SuperUser") {
     return (
       <Layout>
         <div className="p-6" data-testid="kam-rankings-page">
