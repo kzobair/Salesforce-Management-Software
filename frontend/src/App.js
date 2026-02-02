@@ -12,6 +12,7 @@ import Meetings from "@/pages/Meetings";
 import Pipelines from "@/pages/Pipelines";
 import Delivered from "@/pages/Delivered";
 import UserManagement from "@/pages/UserManagement";
+import KPIAssignments from "@/pages/KPIAssignments";
 
 function App() {
   return (
@@ -53,6 +54,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Delivered />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/kpi-assignments"
+              element={
+                <ProtectedRoute>
+                  <KPIAssignments />
                 </ProtectedRoute>
               }
             />
