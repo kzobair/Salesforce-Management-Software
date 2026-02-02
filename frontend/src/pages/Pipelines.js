@@ -376,6 +376,16 @@ const Pipelines = () => {
                   </div>
 
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Delivered Status *</label>
+                    <select required value={formData.delivered_status} onChange={(e) => setFormData({...formData, delivered_status: e.target.value})} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                      <option value="Pending">Pending</option>
+                      <option value="In Process">In Process</option>
+                      <option value="Yes">Yes (Delivered)</option>
+                      <option value="No">No</option>
+                    </select>
+                  </div>
+
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Confirmation Notes</label>
                     <textarea rows="3" value={formData.confirmation_notes} onChange={(e) => setFormData({...formData, confirmation_notes: e.target.value})} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Additional notes about the confirmation..." />
                   </div>
