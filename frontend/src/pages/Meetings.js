@@ -257,63 +257,79 @@ const Meetings = () => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Capacity Requirement *
-                      </label>
-                      <input
-                        type="number"
-                        required
-                        min="0"
-                        step="0.01"
-                        value={formData.capacity_req}
-                        onChange={(e) => setFormData({...formData, capacity_req: parseFloat(e.target.value)})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Capacity MRC *
-                      </label>
-                      <input
-                        type="number"
-                        required
-                        min="0"
-                        step="0.01"
-                        value={formData.capacity_mrc}
-                        onChange={(e) => setFormData({...formData, capacity_mrc: parseFloat(e.target.value)})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                  {/* Capacity Section */}
+                  <div className="border-t pt-4 mt-4">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-3">Primary Capacity</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Capacity Req *</label>
+                        <div className="flex gap-2">
+                          <input type="number" required min="0" step="0.01" value={formData.capacity_req} onChange={(e) => setFormData({...formData, capacity_req: parseFloat(e.target.value)})} className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                          <select value={formData.capacity_unit} onChange={(e) => setFormData({...formData, capacity_unit: e.target.value})} className="w-24 px-2 py-2 border border-gray-300 rounded-lg">
+                            <option value="Mbps">Mbps</option>
+                            <option value="Gbps">Gbps</option>
+                            <option value="IPLC">IPLC</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">MRC *</label>
+                        <div className="flex gap-2">
+                          <input type="number" required min="0" step="0.01" value={formData.capacity_mrc} onChange={(e) => setFormData({...formData, capacity_mrc: parseFloat(e.target.value)})} className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                          <select value={formData.capacity_mrc_currency} onChange={(e) => setFormData({...formData, capacity_mrc_currency: e.target.value})} className="w-20 px-2 py-2 border border-gray-300 rounded-lg">
+                            <option value="BDT">BDT</option>
+                            <option value="USD">USD</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">OTC</label>
+                        <div className="flex gap-2">
+                          <input type="number" min="0" step="0.01" value={formData.capacity_otc} onChange={(e) => setFormData({...formData, capacity_otc: parseFloat(e.target.value)})} className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                          <select value={formData.capacity_otc_currency} onChange={(e) => setFormData({...formData, capacity_otc_currency: e.target.value})} className="w-20 px-2 py-2 border border-gray-300 rounded-lg">
+                            <option value="BDT">BDT</option>
+                            <option value="USD">USD</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Other Capacity Requirement
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={formData.other_cap_req}
-                        onChange={(e) => setFormData({...formData, other_cap_req: parseFloat(e.target.value)})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Other Capacity MRC
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={formData.other_cap_mrc}
-                        onChange={(e) => setFormData({...formData, other_cap_mrc: parseFloat(e.target.value)})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                  {/* Other Capacity Section */}
+                  <div className="border-t pt-4 mt-4">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-3">Other Capacity (Optional)</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Capacity Req</label>
+                        <div className="flex gap-2">
+                          <input type="number" min="0" step="0.01" value={formData.other_cap_req} onChange={(e) => setFormData({...formData, other_cap_req: parseFloat(e.target.value)})} className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                          <select value={formData.other_cap_unit} onChange={(e) => setFormData({...formData, other_cap_unit: e.target.value})} className="w-24 px-2 py-2 border border-gray-300 rounded-lg">
+                            <option value="Mbps">Mbps</option>
+                            <option value="Gbps">Gbps</option>
+                            <option value="IPLC">IPLC</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">MRC</label>
+                        <div className="flex gap-2">
+                          <input type="number" min="0" step="0.01" value={formData.other_cap_mrc} onChange={(e) => setFormData({...formData, other_cap_mrc: parseFloat(e.target.value)})} className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                          <select value={formData.other_cap_mrc_currency} onChange={(e) => setFormData({...formData, other_cap_mrc_currency: e.target.value})} className="w-20 px-2 py-2 border border-gray-300 rounded-lg">
+                            <option value="BDT">BDT</option>
+                            <option value="USD">USD</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">OTC</label>
+                        <div className="flex gap-2">
+                          <input type="number" min="0" step="0.01" value={formData.other_cap_otc} onChange={(e) => setFormData({...formData, other_cap_otc: parseFloat(e.target.value)})} className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                          <select value={formData.other_cap_otc_currency} onChange={(e) => setFormData({...formData, other_cap_otc_currency: e.target.value})} className="w-20 px-2 py-2 border border-gray-300 rounded-lg">
+                            <option value="BDT">BDT</option>
+                            <option value="USD">USD</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -408,10 +424,15 @@ const Meetings = () => {
                         {meeting.contact_name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {meeting.capacity_req}
+                        {meeting.capacity_req} {meeting.capacity_unit || 'Mbps'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ৳{meeting.capacity_mrc.toLocaleString()}
+                        {meeting.capacity_mrc_currency === 'USD' ? '$' : '৳'}{meeting.capacity_mrc.toLocaleString()}
+                        {meeting.capacity_otc > 0 && (
+                          <span className="text-xs text-gray-400 ml-1">
+                            +{meeting.capacity_otc_currency === 'USD' ? '$' : '৳'}{meeting.capacity_otc} OTC
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {new Date(meeting.created_at).toLocaleDateString()}
