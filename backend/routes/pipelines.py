@@ -138,6 +138,74 @@ async def get_pipelines(
     return [Pipeline(**pipeline) for pipeline in pipelines]
 
 
+@router.get("/delivered-pipelines", response_model=List[Pipeline])
+async def get_delivered_pipelines(
+    current_user: User = Depends(get_current_user),
+    db = Depends(get_db)
+):
+    """
+    Get list of pipelines marked as delivered (Yes status)
+    These can be converted to delivered records
+    """
+    # Build query
+    query = {"is_deleted": False, "delivered_status": "Yes"}
+    
+    # Role-based filtering
+    if current_user.role == "KAM":
+        query["kam_user_id"] = current_user.user_id
+    
+    # Get pipelines
+    pipelines = await db.pipelines.find(query, {"_id": 0}).sort("confirmation_date", -1).to_list(1000)
+    
+    # Convert datetime strings back to datetime objects
+    for pipeline in pipelines:
+        if isinstance(pipeline.get('created_at'), str):
+            pipeline['created_at'] = datetime.fromisoformat(pipeline['created_at'])
+        if isinstance(pipeline.get('updated_at'), str):
+            pipeline['updated_at'] = datetime.fromisoformat(pipeline['updated_at'])
+        if pipeline.get('confirmation_date') and isinstance(pipeline.get('confirmation_date'), str):
+            pipeline['confirmation_date'] = datetime.fromisoformat(pipeline['confirmation_date'])
+    
+    return [Pipeline(**pipeline) for pipeline in pipelines]
+
+
+@router.get("/stats/summary")
+async def get_pipeline_summary(
+    current_user: User = Depends(get_current_user),
+    db = Depends(get_db),
+    kam_user_id: Optional[str] = Query(None)
+):
+    """
+    Get pipeline summary statistics (total count and total value)
+    """
+    # Build query
+    query = {"is_deleted": False, "confirmation_status": "Confirmed"}
+    
+    # Role-based filtering
+    if current_user.role == "KAM":
+        query["kam_user_id"] = current_user.user_id
+    elif current_user.role == "SuperUser" and kam_user_id:
+        query["kam_user_id"] = kam_user_id
+    
+    # Get pipelines
+    pipelines = await db.pipelines.find(query, {"_id": 0}).to_list(1000)
+    
+    # Calculate summary
+    total_count = len(pipelines)
+    total_capacity_req = sum(p.get('capacity_req', 0) for p in pipelines)
+    total_capacity_mrc = sum(p.get('capacity_mrc', 0) for p in pipelines)
+    total_other_capacity_req = sum(p.get('other_cap_req', 0) for p in pipelines)
+    total_other_capacity_mrc = sum(p.get('other_cap_mrc', 0) for p in pipelines)
+    
+    return {
+        "total_count": total_count,
+        "total_capacity_requirement": total_capacity_req,
+        "total_capacity_mrc": total_capacity_mrc,
+        "total_other_capacity_requirement": total_other_capacity_req,
+        "total_other_capacity_mrc": total_other_capacity_mrc
+    }
+
+
 @router.get("/{pipeline_id}", response_model=Pipeline)
 async def get_pipeline(
     pipeline_id: str,
