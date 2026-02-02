@@ -22,6 +22,7 @@ const Layout = ({ children }) => {
     { path: '/delivered', label: 'Delivered', icon: '✅' },
     ...(user?.role === 'SuperUser' ? [
       { path: '/kpi-assignments', label: 'KPI Assignments', icon: '🎯' },
+      { path: '/kam-rankings', label: 'KAM Rankings', icon: '🏆' },
       { path: '/users', label: 'User Management', icon: '👥' }
     ] : [])
   ];
