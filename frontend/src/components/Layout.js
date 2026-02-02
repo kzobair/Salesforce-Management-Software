@@ -2,7 +2,7 @@
  * Main Layout Component with Navigation
  */
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 const Layout = ({ children }) => {
