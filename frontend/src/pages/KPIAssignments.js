@@ -294,6 +294,7 @@ const KPIAssignments = () => {
                       </td>
                       <td className="px-6 py-4 text-sm">৳{assignment.revenue_target.toLocaleString()}</td>
                       <td className="px-6 py-4 text-sm">{assignment.capacity_target}</td>
+                      <td className="px-6 py-4 text-sm font-bold text-purple-600">{assignment.kpi_score_target || 0}</td>
                       <td className="px-6 py-4 text-sm text-gray-500">{assignment.notes || '-'}</td>
                       <td className="px-6 py-4 text-sm font-medium space-x-2">
                         <button onClick={() => handleEdit(assignment)} className="text-blue-600 hover:text-blue-900">
