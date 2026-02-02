@@ -281,6 +281,37 @@ async def delete_pipeline(
     return None
 
 
+@router.get("/delivered-pipelines", response_model=List[Pipeline])
+async def get_delivered_pipelines(
+    current_user: User = Depends(get_current_user),
+    db = Depends(get_db)
+):
+    """
+    Get list of pipelines marked as delivered (Yes status)
+    These can be converted to delivered records
+    """
+    # Build query
+    query = {"is_deleted": False, "delivered_status": "Yes"}
+    
+    # Role-based filtering
+    if current_user.role == "KAM":
+        query["kam_user_id"] = current_user.user_id
+    
+    # Get pipelines
+    pipelines = await db.pipelines.find(query, {"_id": 0}).sort("confirmation_date", -1).to_list(1000)
+    
+    # Convert datetime strings back to datetime objects
+    for pipeline in pipelines:
+        if isinstance(pipeline.get('created_at'), str):
+            pipeline['created_at'] = datetime.fromisoformat(pipeline['created_at'])
+        if isinstance(pipeline.get('updated_at'), str):
+            pipeline['updated_at'] = datetime.fromisoformat(pipeline['updated_at'])
+        if pipeline.get('confirmation_date') and isinstance(pipeline.get('confirmation_date'), str):
+            pipeline['confirmation_date'] = datetime.fromisoformat(pipeline['confirmation_date'])
+    
+    return [Pipeline(**pipeline) for pipeline in pipelines]
+
+
 @router.get("/stats/summary")
 async def get_pipeline_summary(
     current_user: User = Depends(get_current_user),
