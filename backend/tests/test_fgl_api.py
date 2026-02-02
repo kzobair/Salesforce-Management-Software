@@ -118,6 +118,11 @@ class TestMeetings:
         self.token = data.get("access_token")
         self.user_id = data.get("user", {}).get("user_id")
         self.headers = {"Authorization": f"Bearer {self.token}"}
+        
+        # Get a valid KAM user for creating meetings
+        kam_response = requests.get(f"{BASE_URL}/api/users/kams", headers=self.headers)
+        kams = kam_response.json()
+        self.kam_user_id = kams[0]["user_id"] if kams else None
     
     def test_create_meeting_with_otc_currency_unit(self):
         """Test creating meeting with OTC, currency, and unit fields"""
