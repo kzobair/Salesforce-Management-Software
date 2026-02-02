@@ -290,7 +290,7 @@ class KPIAssignmentBase(BaseModel):
     kam_user_id: str
     revenue_target: float = Field(..., ge=0)
     capacity_target: float = Field(..., ge=0)
-    kpi_score_target: float = Field(..., ge=0)  # New field for KPI score target
+    kpi_score_target: float = Field(default=0, ge=0)  # KPI score target (optional with default 0)
     notes: Optional[str] = Field(None, max_length=1000)
 
 
