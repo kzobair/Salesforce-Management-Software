@@ -143,9 +143,17 @@ class MeetingBase(BaseModel):
     contact_name: str = Field(..., min_length=1, max_length=200)
     contact_number: str = Field(..., max_length=20)
     capacity_req: float = Field(..., ge=0)
+    capacity_unit: Literal["Mbps", "Gbps", "IPLC"] = Field(default="Mbps")
     capacity_mrc: float = Field(..., ge=0)
+    capacity_mrc_currency: Literal["BDT", "USD"] = Field(default="BDT")
+    capacity_otc: Optional[float] = Field(0, ge=0)
+    capacity_otc_currency: Literal["BDT", "USD"] = Field(default="BDT")
     other_cap_req: Optional[float] = Field(0, ge=0)
+    other_cap_unit: Optional[Literal["Mbps", "Gbps", "IPLC"]] = Field(default="Mbps")
     other_cap_mrc: Optional[float] = Field(0, ge=0)
+    other_cap_mrc_currency: Literal["BDT", "USD"] = Field(default="BDT")
+    other_cap_otc: Optional[float] = Field(0, ge=0)
+    other_cap_otc_currency: Literal["BDT", "USD"] = Field(default="BDT")
     kam_user_id: str
     meeting_minutes: str = Field(..., max_length=5000)
 
