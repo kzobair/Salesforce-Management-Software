@@ -202,6 +202,9 @@ class TestPipelines:
     
     def test_create_pipeline_with_delivered_status(self):
         """Test creating pipeline with delivered status field"""
+        if not self.kam_user_id:
+            pytest.skip("No KAM users available for testing")
+        
         pipeline_data = {
             "client_name": f"TEST_Pipeline_{uuid.uuid4().hex[:8]}",
             "client_address": "Pipeline Address 123",
@@ -219,7 +222,7 @@ class TestPipelines:
             "other_cap_mrc_currency": "BDT",
             "other_cap_otc": 0,
             "other_cap_otc_currency": "BDT",
-            "kam_user_id": self.user_id,
+            "kam_user_id": self.kam_user_id,
             "confirmation_status": "Confirmed",
             "confirmation_date": datetime.utcnow().isoformat(),
             "confirmation_notes": "Test pipeline notes",
