@@ -187,7 +187,7 @@ const KPIAssignments = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Revenue Target *</label>
                       <input
@@ -212,6 +212,19 @@ const KPIAssignments = () => {
                         onChange={(e) => setFormData({...formData, capacity_target: parseFloat(e.target.value)})}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="e.g., 1000"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">KPI Score Target *</label>
+                      <input
+                        type="number"
+                        required
+                        min="0"
+                        step="0.01"
+                        value={formData.kpi_score_target}
+                        onChange={(e) => setFormData({...formData, kpi_score_target: parseFloat(e.target.value)})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="e.g., 100"
                       />
                     </div>
                   </div>
