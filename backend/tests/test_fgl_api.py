@@ -248,6 +248,9 @@ class TestPipelines:
     
     def test_pipeline_delivered_status_options(self):
         """Test pipeline with different delivered status options (Yes/No/Pending/In Process)"""
+        if not self.kam_user_id:
+            pytest.skip("No KAM users available for testing")
+        
         for status in ["Yes", "No", "Pending", "In Process"]:
             pipeline_data = {
                 "client_name": f"TEST_Status_{status}_{uuid.uuid4().hex[:6]}",
@@ -266,7 +269,7 @@ class TestPipelines:
                 "other_cap_mrc_currency": "BDT",
                 "other_cap_otc": 0,
                 "other_cap_otc_currency": "BDT",
-                "kam_user_id": self.user_id,
+                "kam_user_id": self.kam_user_id,
                 "confirmation_status": "Confirmed",
                 "confirmation_date": datetime.utcnow().isoformat(),
                 "confirmation_notes": f"Testing {status} status",
