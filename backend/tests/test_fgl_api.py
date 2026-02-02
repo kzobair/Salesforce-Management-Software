@@ -194,6 +194,11 @@ class TestPipelines:
         self.token = data.get("access_token")
         self.user_id = data.get("user", {}).get("user_id")
         self.headers = {"Authorization": f"Bearer {self.token}"}
+        
+        # Get a valid KAM user for creating pipelines
+        kam_response = requests.get(f"{BASE_URL}/api/users/kams", headers=self.headers)
+        kams = kam_response.json()
+        self.kam_user_id = kams[0]["user_id"] if kams else None
     
     def test_create_pipeline_with_delivered_status(self):
         """Test creating pipeline with delivered status field"""
