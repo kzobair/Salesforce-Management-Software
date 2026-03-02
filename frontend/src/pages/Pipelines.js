@@ -253,8 +253,8 @@ const Pipelines = () => {
 
         {/* Pipeline Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
-            <div ref={modalRef} className="bg-white rounded-lg shadow-xl max-w-3xl w-full">
+          <div ref={modalRef} className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
+            <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full">
               <div className="p-6">
                 <h2 className="text-2xl font-bold mb-4">
                   {editingPipeline ? 'Edit Pipeline' : 'Add New Pipeline'}
