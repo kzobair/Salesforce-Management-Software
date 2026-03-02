@@ -19,6 +19,14 @@ const Pipelines = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [kamUsers, setKamUsers] = useState([]);
   const [summary, setSummary] = useState(null);
+  const modalRef = useRef(null);
+
+  // Scroll modal to top when it opens
+  useEffect(() => {
+    if (showForm && modalRef.current) {
+      modalRef.current.scrollTop = 0;
+    }
+  }, [showForm]);
 
   const [formData, setFormData] = useState({
     client_name: '',
