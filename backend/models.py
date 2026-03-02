@@ -264,7 +264,7 @@ class DeliveredCreate(DeliveredBase):
     @classmethod
     def validate_delivered_date(cls, v):
         """Validate delivered date is not in future"""
-        if v and v > datetime.utcnow():
+        if v and v.replace(tzinfo=None) > datetime.utcnow():
             raise ValueError('Delivered date cannot be in the future')
         return v
 
