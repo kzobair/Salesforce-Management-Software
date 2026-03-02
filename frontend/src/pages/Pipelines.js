@@ -253,8 +253,8 @@ const Pipelines = () => {
 
         {/* Pipeline Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
+            <div ref={modalRef} className="bg-white rounded-lg shadow-xl max-w-3xl w-full">
               <div className="p-6">
                 <h2 className="text-2xl font-bold mb-4">
                   {editingPipeline ? 'Edit Pipeline' : 'Add New Pipeline'}
@@ -263,11 +263,11 @@ const Pipelines = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Client Name *</label>
-                      <input type="text" required value={formData.client_name} onChange={(e) => setFormData({...formData, client_name: e.target.value})} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                      <input type="text" required value={formData.client_name} onChange={(e) => setFormData({...formData, client_name: e.target.value})} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" data-testid="client-name-input" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Contact Name *</label>
-                      <input type="text" required value={formData.contact_name} onChange={(e) => setFormData({...formData, contact_name: e.target.value})} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                      <input type="text" required value={formData.contact_name} onChange={(e) => setFormData({...formData, contact_name: e.target.value})} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" data-testid="contact-name-input" />
                     </div>
                   </div>
 
