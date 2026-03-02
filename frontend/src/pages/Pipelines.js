@@ -253,13 +253,16 @@ const Pipelines = () => {
 
         {/* Pipeline Form Modal */}
         {showForm && (
-          <div ref={modalRef} className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4 pt-8 overflow-y-auto">
-            <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full">
-              <div className="p-6">
-                <h2 className="text-2xl font-bold mb-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowForm(false)}></div>
+            <div className="relative bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] flex flex-col">
+              <div className="p-6 border-b sticky top-0 bg-white rounded-t-lg">
+                <h2 className="text-2xl font-bold">
                   {editingPipeline ? 'Edit Pipeline' : 'Add New Pipeline'}
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+              </div>
+              <div className="p-6 overflow-y-auto flex-1">
+                <form onSubmit={handleSubmit} className="space-y-4" id="pipeline-form">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Client Name *</label>
