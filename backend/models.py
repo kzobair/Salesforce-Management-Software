@@ -212,7 +212,7 @@ class PipelineCreate(PipelineBase):
         """Validate confirmation date is required when status is Confirmed"""
         if info.data.get('confirmation_status') == 'Confirmed' and not v:
             raise ValueError('Confirmation date is required when status is Confirmed')
-        if v and v > datetime.utcnow():
+        if v and v.replace(tzinfo=None) > datetime.utcnow():
             raise ValueError('Confirmation date cannot be in the future')
         return v
 
