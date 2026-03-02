@@ -39,6 +39,7 @@ async def create_pipeline(
     Create a new pipeline record
     - KAMs can only create for themselves
     - Super User can create for any KAM
+    - If delivered_status is 'Yes', automatically creates a delivered record with KPI score
     """
     # If user is KAM, force kam_user_id to be their own ID
     if current_user.role == "KAM":
@@ -83,6 +84,12 @@ async def create_pipeline(
     
     # Insert into database
     await db.pipelines.insert_one(pipeline_dict)
+    
+    # If delivered_status is 'Yes', create delivered record with KPI score
+    if pipeline_data.delivered_status == "Yes":
+        kpi_score = 10.0  # Default score per delivery
+        pipeline_doc_for_delivered = {**pipeline_dict, 'pipeline_id': pipeline.pipeline_id}
+        await create_delivered_from_pipeline(db, pipeline_doc_for_delivered, current_user.user_id, kpi_score)
     
     return pipeline
 
