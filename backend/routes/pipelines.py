@@ -239,6 +239,79 @@ async def get_pipeline(
     return Pipeline(**pipeline_doc)
 
 
+async def generate_delivered_serial_number(db, prefix: str = "DEL") -> str:
+    """Generate serial number for delivered"""
+    year = datetime.utcnow().year
+    last_record = await db.delivered.find_one(
+        {"serial_number": {"$regex": f"^{prefix}-{year}-"}},
+        sort=[("serial_number", -1)]
+    )
+    if last_record:
+        last_num = int(last_record['serial_number'].split('-')[-1])
+        new_num = last_num + 1
+    else:
+        new_num = 1
+    return f"{prefix}-{year}-{new_num:04d}"
+
+
+async def create_delivered_from_pipeline(db, pipeline_doc: dict, current_user_id: str, kpi_score: float = 10.0):
+    """
+    Create a delivered record from a pipeline when delivered_status is set to Yes
+    """
+    import uuid
+    
+    # Check if delivered record already exists for this pipeline
+    existing = await db.delivered.find_one({
+        "pipeline_id": pipeline_doc['pipeline_id'],
+        "is_deleted": False
+    })
+    
+    if existing:
+        # Update existing delivered record's KPI score
+        await db.delivered.update_one(
+            {"delivered_id": existing['delivered_id']},
+            {"$set": {"kpi_score": kpi_score, "updated_at": datetime.utcnow().isoformat()}}
+        )
+        return existing['delivered_id']
+    
+    # Generate serial number
+    serial_number = await generate_delivered_serial_number(db, "DEL")
+    
+    # Create delivered record
+    delivered_doc = {
+        "delivered_id": str(uuid.uuid4()),
+        "serial_number": serial_number,
+        "client_name": pipeline_doc['client_name'],
+        "client_address": pipeline_doc['client_address'],
+        "contact_name": pipeline_doc['contact_name'],
+        "contact_number": pipeline_doc['contact_number'],
+        "capacity_req": pipeline_doc['capacity_req'],
+        "capacity_unit": pipeline_doc.get('capacity_unit', 'Mbps'),
+        "capacity_mrc": pipeline_doc['capacity_mrc'],
+        "capacity_mrc_currency": pipeline_doc.get('capacity_mrc_currency', 'BDT'),
+        "capacity_otc": pipeline_doc.get('capacity_otc', 0),
+        "capacity_otc_currency": pipeline_doc.get('capacity_otc_currency', 'BDT'),
+        "other_cap_req": pipeline_doc.get('other_cap_req', 0),
+        "other_cap_unit": pipeline_doc.get('other_cap_unit', 'Mbps'),
+        "other_cap_mrc": pipeline_doc.get('other_cap_mrc', 0),
+        "other_cap_mrc_currency": pipeline_doc.get('other_cap_mrc_currency', 'BDT'),
+        "other_cap_otc": pipeline_doc.get('other_cap_otc', 0),
+        "other_cap_otc_currency": pipeline_doc.get('other_cap_otc_currency', 'BDT'),
+        "kam_user_id": pipeline_doc['kam_user_id'],
+        "pipeline_id": pipeline_doc['pipeline_id'],
+        "kpi_score": kpi_score,
+        "delivered_date": datetime.utcnow().isoformat(),
+        "created_at": datetime.utcnow().isoformat(),
+        "updated_at": datetime.utcnow().isoformat(),
+        "created_by": current_user_id,
+        "updated_by": current_user_id,
+        "is_deleted": False
+    }
+    
+    await db.delivered.insert_one(delivered_doc)
+    return delivered_doc['delivered_id']
+
+
 @router.put("/{pipeline_id}", response_model=Pipeline)
 async def update_pipeline(
     pipeline_id: str,
@@ -250,6 +323,7 @@ async def update_pipeline(
     Update a pipeline
     - KAMs can only update their own pipelines
     - Super User can update any pipeline
+    - When delivered_status is set to 'Yes', automatically creates a delivered record with KPI score
     """
     # Find pipeline
     pipeline_doc = await db.pipelines.find_one(
@@ -278,6 +352,10 @@ async def update_pipeline(
     if current_user.role == "KAM":
         pipeline_data.kam_user_id = current_user.user_id
     
+    # Check if delivered_status is changing to 'Yes'
+    old_delivered_status = pipeline_doc.get('delivered_status', 'Pending')
+    new_delivered_status = pipeline_data.delivered_status
+    
     # Update pipeline
     update_dict = pipeline_data.model_dump()
     update_dict['updated_at'] = datetime.utcnow().isoformat()
@@ -289,6 +367,27 @@ async def update_pipeline(
         {"pipeline_id": pipeline_id},
         {"$set": update_dict}
     )
+    
+    # If delivered_status changed to 'Yes', create/update delivered record with KPI score
+    if new_delivered_status == "Yes":
+        # Get KPI score from KPI assignment (default to 10 if not assigned)
+        current_month = datetime.utcnow().strftime("%Y-%m")
+        kpi_assignment = await db.kpi_assignments.find_one({
+            "kam_user_id": pipeline_data.kam_user_id,
+            "month": current_month,
+            "is_deleted": False
+        })
+        
+        # Calculate KPI score based on MRC value (or use a fixed score per delivery)
+        # Default: 10 points per delivery, or proportional to target
+        kpi_score = 10.0  # Default score per delivery
+        if kpi_assignment and kpi_assignment.get('kpi_score_target'):
+            # Each delivery contributes a portion towards the target
+            kpi_score = 10.0  # Fixed score per delivery
+        
+        # Create delivered record with pipeline data
+        pipeline_doc_updated = {**pipeline_doc, **update_dict, 'pipeline_id': pipeline_id}
+        await create_delivered_from_pipeline(db, pipeline_doc_updated, current_user.user_id, kpi_score)
     
     # Fetch updated pipeline
     updated_pipeline = await db.pipelines.find_one(
