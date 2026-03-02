@@ -222,6 +222,52 @@ async def update_delivered(
     return Delivered(**updated_delivered)
 
 
+@router.patch("/{delivered_id}/kpi-score")
+async def update_kpi_score(
+    delivered_id: str,
+    kpi_score: float = Query(..., ge=0, description="KPI score to assign"),
+    current_user: User = Depends(get_current_user),
+    db = Depends(get_db)
+):
+    """
+    Update KPI score for a delivered record
+    - Only Super User can update KPI scores
+    """
+    # Check if user is SuperUser
+    if current_user.role != "SuperUser":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only Super Users can assign KPI scores"
+        )
+    
+    # Find delivered record
+    delivered_doc = await db.delivered.find_one(
+        {"delivered_id": delivered_id, "is_deleted": False},
+        {"_id": 0}
+    )
+    
+    if not delivered_doc:
+        raise HTTPException(status_code=404, detail="Delivered record not found")
+    
+    # Update KPI score
+    await db.delivered.update_one(
+        {"delivered_id": delivered_id},
+        {
+            "$set": {
+                "kpi_score": kpi_score,
+                "updated_at": datetime.utcnow().isoformat(),
+                "updated_by": current_user.user_id
+            }
+        }
+    )
+    
+    return {
+        "message": "KPI score updated successfully",
+        "delivered_id": delivered_id,
+        "kpi_score": kpi_score
+    }
+
+
 @router.delete("/{delivered_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_delivered(
     delivered_id: str,
