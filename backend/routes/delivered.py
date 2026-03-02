@@ -289,7 +289,7 @@ async def get_delivered_summary(
     total_count = len(delivered_records)
     total_capacity_delivered = sum(d.get('capacity_req', 0) for d in delivered_records)
     total_revenue = sum(d.get('capacity_mrc', 0) for d in delivered_records)
-    total_kpi = sum(d.get('kpi_value', 0) for d in delivered_records)
+    total_kpi = sum(d.get('kpi_score', 0) for d in delivered_records)
     
     return {
         "total_count": total_count,
