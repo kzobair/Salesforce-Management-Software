@@ -405,6 +405,17 @@ async def update_pipeline(
         pipeline_doc_updated = {**pipeline_doc, **update_dict, 'pipeline_id': pipeline_id}
         await create_delivered_from_pipeline(db, pipeline_doc_updated, current_user.user_id, kpi_score)
     
+    # If delivered_status changed FROM 'Yes' to something else, soft-delete the delivered record
+    elif old_delivered_status == "Yes" and new_delivered_status != "Yes":
+        await db.delivered.update_one(
+            {"pipeline_id": pipeline_id, "is_deleted": False},
+            {"$set": {
+                "is_deleted": True,
+                "updated_at": datetime.utcnow().isoformat(),
+                "updated_by": current_user.user_id
+            }}
+        )
+    
     # Fetch updated pipeline
     updated_pipeline = await db.pipelines.find_one(
         {"pipeline_id": pipeline_id},
