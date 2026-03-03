@@ -224,12 +224,14 @@ const Login = () => {
           }`}
         >
           {/* Glass morphism card */}
-          <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8 relative overflow-hidden">
-            {/* Animated border glow */}
-            <div className="absolute inset-0 rounded-3xl animate-borderGlow" style={{
-              background: 'linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
-              backgroundSize: '200% 100%',
-            }} />
+          <div className="relative">
+            {/* Traveling light beam container - outside the card */}
+            <div className="absolute -inset-[2px] rounded-3xl overflow-hidden">
+              <div className="absolute w-24 h-24 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 blur-md opacity-80 animate-travelBeam" />
+            </div>
+            
+            {/* Main card */}
+            <div className="relative backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8 overflow-hidden">
             
             {/* Logo and Title */}
             <div 
@@ -396,6 +398,7 @@ const Login = () => {
               </p>
             </div>
           </div>
+          </div>
 
           {/* Bottom branding */}
           <div 
@@ -446,12 +449,26 @@ const Login = () => {
           }
         }
         
-        @keyframes borderGlow {
-          0%, 100% {
-            background-position: -200% 0;
+        @keyframes travelBeam {
+          0% {
+            top: -10%;
+            left: -10%;
+          }
+          25% {
+            top: -10%;
+            left: 90%;
           }
           50% {
-            background-position: 200% 0;
+            top: 90%;
+            left: 90%;
+          }
+          75% {
+            top: 90%;
+            left: -10%;
+          }
+          100% {
+            top: -10%;
+            left: -10%;
           }
         }
         
@@ -466,8 +483,8 @@ const Login = () => {
           background-size: 200% 200%;
         }
         
-        .animate-borderGlow {
-          animation: borderGlow 4s ease infinite;
+        .animate-travelBeam {
+          animation: travelBeam 4s linear infinite;
         }
         
         .animate-shake {
