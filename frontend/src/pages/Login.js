@@ -91,6 +91,7 @@ const Login = () => {
     const ctx = canvas.getContext('2d');
     let animationId;
     let nodes = [];
+    let hue = 210; // Start with blue
     
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -110,6 +111,9 @@ const Login = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
+      // Slowly cycle through colors
+      hue = (hue + 0.2) % 360;
+      
       // Update and draw nodes
       nodes.forEach((node, i) => {
         node.x += node.vx;
@@ -119,10 +123,10 @@ const Login = () => {
         if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
         if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
         
-        // Draw node
+        // Draw node with dynamic color
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(59, 130, 246, 0.3)';
+        ctx.fillStyle = `hsla(${hue}, 70%, 60%, 0.4)`;
         ctx.fill();
         
         // Draw connections
@@ -135,7 +139,7 @@ const Login = () => {
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(otherNode.x, otherNode.y);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 * (1 - distance / 150)})`;
+            ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${0.2 * (1 - distance / 150)})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
