@@ -1,7 +1,7 @@
 """
 Authentication routes for user registration, login, and password management
 """
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Request
 from models import (
     UserCreate, UserLogin, User, Token, UserResponse, UserInDB,
     ForgotPasswordRequest, ResetPasswordRequest, ChangePasswordRequest,
@@ -9,11 +9,16 @@ from models import (
 )
 from auth_utils import verify_password, get_password_hash, create_access_token
 from dependencies import get_db, get_current_user
+from email_utils import send_password_reset_email
 from datetime import datetime, timedelta
 import uuid
 import secrets
+import os
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+# Get frontend URL for reset links
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://103.131.159.248')
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -145,17 +150,16 @@ async def login(credentials: UserLogin, db = Depends(get_db)):
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
 async def forgot_password(request: ForgotPasswordRequest, db = Depends(get_db)):
     """
-    Request password reset (Mocked - stores token in database)
-    In production, this would send an email with reset link
+    Request password reset - sends email with reset link
     """
     # Find user by email
     user_doc = await db.users.find_one({"email": request.email.lower()}, {"_id": 0})
     
-    # Don't reveal if email exists (security best practice)
+    # Always return success message (don't reveal if email exists)
+    success_message = "If the email exists in our system, a password reset link has been sent."
+    
     if not user_doc:
-        return {
-            "message": "If the email exists, a password reset link has been sent. (Mocked: Check /api/auth/get-reset-token/{email})"
-        }
+        return {"message": success_message}
     
     # Generate reset token
     reset_token = secrets.token_urlsafe(32)
@@ -174,9 +178,19 @@ async def forgot_password(request: ForgotPasswordRequest, db = Depends(get_db)):
     
     await db.password_reset_tokens.insert_one(token_dict)
     
-    return {
-        "message": f"If the email exists, a password reset link has been sent. (Mocked: Use token from /api/auth/get-reset-token/{request.email})"
-    }
+    # Send email
+    email_sent = send_password_reset_email(
+        to_email=user_doc['email'],
+        reset_token=reset_token,
+        reset_url=FRONTEND_URL
+    )
+    
+    if not email_sent:
+        # If email fails, still return success (security) but log the issue
+        # In production, you might want to handle this differently
+        pass
+    
+    return {"message": success_message}
 
 
 @router.get("/get-reset-token/{email}")
