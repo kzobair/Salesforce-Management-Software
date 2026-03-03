@@ -185,7 +185,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-800 via-slate-700 to-gray-800">
       {/* Network canvas animation */}
       <canvas 
         ref={canvasRef} 
