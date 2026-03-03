@@ -402,6 +402,9 @@ const Login = () => {
             <p className="text-gray-500 text-xs">
               © {new Date().getFullYear()} Fiber @ Home Global Limited. All rights reserved.
             </p>
+            <p className="text-gray-600 text-xs mt-1">
+              Developed by Zobair Khan
+            </p>
           </div>
         </div>
       </div>
