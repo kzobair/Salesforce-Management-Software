@@ -249,16 +249,25 @@ async def get_pipeline(
 async def generate_delivered_serial_number(db, prefix: str = "DEL") -> str:
     """Generate serial number for delivered"""
     year = datetime.utcnow().year
-    last_record = await db.delivered.find_one(
-        {"serial_number": {"$regex": f"^{prefix}-{year}-"}},
+    
+    # Get all records with proper serial number format for this year
+    cursor = db.delivered.find(
+        {"serial_number": {"$regex": f"^{prefix}-{year}-\\d+$"}},
         sort=[("serial_number", -1)]
     )
-    if last_record:
-        last_num = int(last_record['serial_number'].split('-')[-1])
-        new_num = last_num + 1
-    else:
-        new_num = 1
-    return f"{prefix}-{year}-{new_num:04d}"
+    
+    # Find the highest valid number
+    max_num = 0
+    async for record in cursor:
+        try:
+            num_str = record['serial_number'].split('-')[-1]
+            num = int(num_str)
+            if num > max_num:
+                max_num = num
+        except (ValueError, IndexError):
+            continue
+    
+    return f"{prefix}-{year}-{max_num + 1:04d}"
 
 
 async def create_delivered_from_pipeline(db, pipeline_doc: dict, current_user_id: str, kpi_score: float = 10.0):
