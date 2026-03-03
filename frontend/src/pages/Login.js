@@ -399,10 +399,10 @@ const Login = () => {
               mounted ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
             }`}
           >
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-400 text-xs">
               © {new Date().getFullYear()} Fiber @ Home Global Limited. All rights reserved.
             </p>
-            <p className="text-gray-600 text-xs mt-1">
+            <p className="text-gray-400 text-xs mt-1">
               Developed by Zobair Khan
             </p>
           </div>
