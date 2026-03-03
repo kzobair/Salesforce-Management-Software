@@ -22,7 +22,7 @@ const FiberLine = ({ delay, duration, startX, startY, endX, endY }) => {
         animation: `fiberPulse ${duration}s ease-in-out ${delay}s infinite`,
       }}
     >
-      <div className="h-full w-full bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-60" />
+      <div className="h-full w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-60" />
     </div>
   );
 };
@@ -31,7 +31,7 @@ const FiberLine = ({ delay, duration, startX, startY, endX, endY }) => {
 const Particle = ({ size, delay, duration, x, y }) => {
   return (
     <div
-      className="absolute rounded-full bg-red-500/30 blur-sm"
+      className="absolute rounded-full bg-blue-500/30 blur-sm"
       style={{
         width: `${size}px`,
         height: `${size}px`,
@@ -122,7 +122,7 @@ const Login = () => {
         // Draw node
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(220, 38, 38, 0.3)';
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.3)';
         ctx.fill();
         
         // Draw connections
@@ -135,7 +135,7 @@ const Login = () => {
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(otherNode.x, otherNode.y);
-            ctx.strokeStyle = `rgba(220, 38, 38, ${0.15 * (1 - distance / 150)})`;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 * (1 - distance / 150)})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -195,7 +195,7 @@ const Login = () => {
       
       {/* Animated gradient overlay */}
       <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute inset-0 bg-gradient-to-tr from-red-900/20 via-transparent to-red-800/20 animate-gradient" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/20 via-transparent to-indigo-800/20 animate-gradient" />
       </div>
       
       {/* Fiber optic lines */}
@@ -223,7 +223,7 @@ const Login = () => {
           <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8 relative overflow-hidden">
             {/* Animated border glow */}
             <div className="absolute inset-0 rounded-3xl animate-borderGlow" style={{
-              background: 'linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.3), transparent)',
+              background: 'linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
               backgroundSize: '200% 100%',
             }} />
             
@@ -236,7 +236,7 @@ const Login = () => {
               <div className="mb-6 relative">
                 {/* Logo container with glow effect */}
                 <div className="relative inline-block">
-                  <div className="absolute inset-0 blur-xl bg-red-500/30 rounded-full animate-pulse" />
+                  <div className="absolute inset-0 blur-xl bg-blue-500/30 rounded-full animate-pulse" />
                   <img 
                     src={fglLogo} 
                     alt="Fiber @ Home Global" 
@@ -256,7 +256,7 @@ const Login = () => {
             {/* Error Message */}
             {error && (
               <div 
-                className="mb-6 p-4 bg-red-500/20 backdrop-blur border border-red-500/30 text-red-200 rounded-xl animate-shake"
+                className="mb-6 p-4 bg-red-500/20 backdrop-blur border border-red-500/30 text-red-300 rounded-xl animate-shake"
                 data-testid="login-error-message"
               >
                 <div className="flex items-center gap-2">
@@ -279,7 +279,7 @@ const Login = () => {
                   Email Address
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/50 to-red-600/50 rounded-xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/50 to-indigo-600/50 rounded-xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
                   <input
                     type="email"
                     id="email"
@@ -287,7 +287,7 @@ const Login = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="relative w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500/50 focus:bg-white/10 transition-all duration-300"
+                    className="relative w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all duration-300"
                     placeholder="your.email@fgl.com"
                     data-testid="login-email-input"
                   />
@@ -303,7 +303,7 @@ const Login = () => {
                   Password
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/50 to-red-600/50 rounded-xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/50 to-indigo-600/50 rounded-xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
                   <input
                     type="password"
                     id="password"
@@ -311,7 +311,7 @@ const Login = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="relative w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500/50 focus:bg-white/10 transition-all duration-300"
+                    className="relative w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all duration-300"
                     placeholder="••••••••"
                     data-testid="login-password-input"
                   />
@@ -325,7 +325,7 @@ const Login = () => {
               >
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-red-400 hover:text-red-300 font-medium transition-colors duration-200"
+                  className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
                   data-testid="forgot-password-link"
                 >
                   Forgot password?
@@ -344,7 +344,7 @@ const Login = () => {
                   data-testid="login-submit-button"
                 >
                   {/* Button gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 transition-transform duration-300 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-700 transition-transform duration-300 group-hover:scale-105" />
                   
                   {/* Animated shine effect */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -384,7 +384,7 @@ const Login = () => {
                 Don't have an account?{' '}
                 <Link 
                   to="/register" 
-                  className="text-red-400 hover:text-red-300 font-semibold transition-colors duration-200"
+                  className="text-blue-400 hover:text-blue-300 font-semibold transition-colors duration-200"
                   data-testid="register-link"
                 >
                   Register here
