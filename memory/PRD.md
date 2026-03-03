@@ -128,12 +128,15 @@ Build a salesforce management software named "FGL Salesforce Management Platform
   - Added animated network canvas with floating particles and connection lines
   - Implemented glass-morphism card with dark gradient background
   - Added FGL "Fiber @ Home Global" logo with glow effect
-  - Red accent color theme matching the brand identity
+  - Blue accent color theme matching the app's existing theme
   - Smooth entrance animations for all form elements
-  - Interactive input fields with red glow on focus
-  - Professional gradient button with hover shine effect
-  - Mobile responsive design
+  - Interactive input fields with blue glow on focus
+  - Traveling light beam animation around the login card border
+  - Dynamic color-changing particles
+  - Added developer credit: "Developed by Zobair Khan"
 - ✅ Logo saved to `/app/frontend/src/assets/fgl-logo.png`
+- ✅ Fixed bug: Serial number generation for delivered records was crashing when encountering corrupted data (invalid serial format)
+- ✅ Fixed bug: Delivered records now properly soft-delete when pipeline status changes FROM "Yes" to another status
 
 ## Future Enhancements (Backlog)
 - Refactor large `Meetings.js` into smaller components
